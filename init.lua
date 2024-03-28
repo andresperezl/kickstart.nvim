@@ -466,6 +466,28 @@ require('lazy').setup({
         end,
       })
 
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        pattern = '*.go',
+        callback = function()
+          local params = vim.lsp.util.make_range_params()
+          params.context = { only = { 'source.organizeImports' } }
+          -- buf_request_sync defaults to a 1000ms timeout. Depending on your
+          -- machine and codebase, you may want longer. Add an additional
+          -- argument after params if you find that you have to write the file
+          -- twice for changes to be saved.
+          -- E.g., vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+          local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params)
+          for cid, res in pairs(result or {}) do
+            for _, r in pairs(res.result or {}) do
+              if r.edit then
+                local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or 'utf-16'
+                vim.lsp.util.apply_workspace_edit(r.edit, enc)
+              end
+            end
+          end
+          vim.lsp.buf.format { async = false }
+        end,
+      })
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.
       --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
@@ -484,7 +506,11 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        gopls = {},
+        gopls = {
+          settings = {
+            gofumpt = true,
+          },
+        },
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -766,7 +792,7 @@ require('lazy').setup({
     'ThePrimeagen/harpoon',
     branch = 'harpoon2',
     dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function(_, opts)
+    config = function()
       local harpoon = require 'harpoon'
       harpoon.setup()
       vim.keymap.set('n', '<leader>a', function()
@@ -796,6 +822,15 @@ require('lazy').setup({
       vim.keymap.set('n', '<C-S-N>', function()
         harpoon:list():next()
       end, { desc = 'Harpoon: [N]ext buffer' })
+    end,
+  },
+  {
+    'leoluz/nvim-dap-go',
+    dependencies = { 'mfussenegger/nvim-dap' },
+    event = 'BufEnter *.go',
+    config = function()
+      local dapgo = require 'dap-go'
+      dapgo.setup()
     end,
   },
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
