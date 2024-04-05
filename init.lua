@@ -769,6 +769,8 @@ require('lazy').setup({
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
+      local pairs = require 'mini.pairs'
+      pairs.setup()
     end,
   },
   { -- Highlight, edit, and navigate code
