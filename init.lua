@@ -134,6 +134,19 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 
 vim.keymap.set('n', '<leader>x', '<cmd>Explore<CR>', { desc = 'Open E[x]plore' })
 
+-- Moves lines around
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
+
+-- greatest remap ever
+vim.keymap.set('x', '<leader>p', [["_dP]])
+
+-- next greatest remap ever : asbjornHaland
+vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
+vim.keymap.set('n', '<leader>Y', [["+Y]])
+
+vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]])
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -510,6 +523,7 @@ require('lazy').setup({
             gofumpt = true,
           },
         },
+        golangci_lint_ls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
