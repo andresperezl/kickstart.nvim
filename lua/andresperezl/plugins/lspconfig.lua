@@ -147,6 +147,7 @@ return { -- LSP Configuration & Plugins
                 url = '',
               },
               schemas = require('schemastore').yaml.schemas(),
+              format = { enable = false },
             },
           },
         },
@@ -159,6 +160,9 @@ return { -- LSP Configuration & Plugins
           },
         },
       },
+      terraformls = {},
+      pylsp = {},
+      tsserver = {},
     }
 
     require('mason').setup()

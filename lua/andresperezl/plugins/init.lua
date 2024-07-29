@@ -232,11 +232,6 @@ return { -- NOTE: Plugins can be added with a link (or for a github repo: 'owner
       statusline.section_location = function()
         return '%2l:%-2v'
       end
-
-      -- ... and there is more!
-      --  Check out: https://github.com/echasnovski/mini.nvim
-      local pairs = require 'mini.pairs'
-      pairs.setup()
     end,
   },
   { -- Highlight, edit, and navigate code
@@ -376,4 +371,12 @@ return { -- NOTE: Plugins can be added with a link (or for a github repo: 'owner
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   -- { import = 'custom.plugins' },
   'andweeb/presence.nvim',
+  {
+    'cuducos/yaml.nvim',
+    ft = { 'yaml' }, -- optional
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-telescope/telescope.nvim', -- optional
+    },
+  },
 }
