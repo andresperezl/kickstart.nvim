@@ -163,6 +163,15 @@ return { -- LSP Configuration & Plugins
       terraformls = {},
       pylsp = {},
       tsserver = {},
+      helm_ls = {
+        settings = {
+          ['helm-ls'] = {
+            yamlls = {
+              path = 'yaml-language-server',
+            },
+          },
+        },
+      },
     }
 
     require('mason').setup()
@@ -176,6 +185,7 @@ return { -- LSP Configuration & Plugins
       'jsonlint',
       'hadolint',
       'golangci-lint',
+      'helm_ls',
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

@@ -379,4 +379,5 @@ return { -- NOTE: Plugins can be added with a link (or for a github repo: 'owner
       'nvim-telescope/telescope.nvim', -- optional
     },
   },
+  { 'towolf/vim-helm', ft = 'helm' },
 }
